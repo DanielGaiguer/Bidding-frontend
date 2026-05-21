@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <body>
+
+    <div th:replace="layout/header :: header"></div>
+
+    <h2>Lista de Editais</h2>
+
+    <br/>
+
+    <div th:if="${session.role == 'COMPRADOR'}">
+        <a href="/editais/criar">➕ Novo Edital</a>
+    </div>
+
+    <br/>
+
+    <table border="1" width="100%">
+        <tr>
+            <th>Título</th>
+            <th>Descrição</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+
+        <tr th:each="e : ${editais}">
+
+            <td th:text="${e.titulo}"></td>
+            <td th:text="${e.descricao}"></td>
+
+            <td>
+                <span th:if="${e.status == 'ABERTO'}" style="color:green">
+                    Aberto
+                </span>
+
+                <span th:if="${e.status == 'ENCERRADO'}" style="color:red">
+                    Encerrado
+                </span>
+            </td>
+
+            <td>
+                <a th:href="@{|/editais/${e.id}|}">Ver</a>
+            </td>
+
+        </tr>
+
+    </table>
+
+    <div th:replace="layout/footer :: footer"></div>
+
+    </body>
+</html>

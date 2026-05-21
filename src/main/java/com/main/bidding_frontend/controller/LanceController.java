@@ -18,7 +18,7 @@ public class LanceController {
         this.apiService = apiService;
     }
     
-    @PostMapping("/lances")
+    @PostMapping("/api/lances")
     public String criarLance(HttpSession session, LancePostDTO lance){
         String token = (String) session.getAttribute("token");
         return apiService.criarLance(lance, token);

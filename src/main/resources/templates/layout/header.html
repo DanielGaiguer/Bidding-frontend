@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="header">
+
+    <div style="background:#2563eb;color:white;padding:20px;">
+        <h2>Sistema de Licitações</h2>
+
+        <div style="float:right">
+
+            <span th:text="${session.userNome}">Usuário</span>
+            
+            <a href="/login" style="color:white;margin-left:15px;">Login</a>
+            <a href="/" style="color:white;margin-left:15px;">Home</a>
+            <a href="/editais" style="color:white;margin-left:15px;">Editais</a>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

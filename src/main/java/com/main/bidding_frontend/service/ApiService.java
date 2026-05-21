@@ -19,13 +19,9 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class ApiService {
-    private final RestTemplate restTemplate;
+    private RestTemplate restTemplate = new RestTemplate();
     private final String BASE_URL = "http://localhost:9000";
-    
-    public ApiService(RestTemplate restTemplate){
-        this.restTemplate = restTemplate;
-    }
-    
+
     public List<EditalDTO> listarEditais(String token){
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
@@ -45,7 +41,7 @@ public class ApiService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(user, headers);
-        return restTemplate.exchange(BASE_URL + "/api/auth/login", HttpMethod.POST, entity, String.class).getBody();
+        return restTemplate.exchange(BASE_URL + "/api/auth/register", HttpMethod.POST, entity, String.class).getBody();
     }
     
     public String criarEdital(EditalDTO edital, String token){

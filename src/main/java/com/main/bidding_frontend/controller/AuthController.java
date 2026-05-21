@@ -9,22 +9,20 @@ import com.main.bidding_frontend.model.UserRequestDTO;
 import com.main.bidding_frontend.service.ApiService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class AuthController {
     
-    private final ApiService apiService;
-    
-    public AuthController(ApiService apiService){
-        this.apiService = apiService;
-    }
-    
+    private ApiService apiService;
         
-    @PostMapping("/login")
-    public String logar(UserRequestDTO dto, HttpSession session){
+    @PostMapping("/api/login")
+    public String logar(@ModelAttribute UserRequestDTO dto, HttpSession session){
         try{
             String token = apiService.logar(dto);
+            session.setAttribute("email", dto.getEmail());
+            session
             session.setAttribute("token", token);
             return "redirect:/editais";
         }catch(Exception e ){
@@ -32,7 +30,7 @@ public class AuthController {
         }
     }
     
-    @PostMapping("/registrar")
+    @PostMapping("/api/registrar")
     public String registrar(UserDTO dto){
         try{
             apiService.registrarUsuario(dto);

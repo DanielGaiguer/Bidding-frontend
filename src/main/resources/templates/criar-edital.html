@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <body>
+
+    <div th:replace="layout/header :: header"></div>
+
+    <div th:if="${session.role != 'COMPRADOR'}">
+        <h3>Acesso negado</h3>
+    </div>
+
+    <div th:if="${session.role == 'COMPRADOR'}">
+
+        <h2>Criar Edital</h2>
+
+        <form action="/api/editais/criar" method="post">
+
+            <input type="text" name="titulo" placeholder="Título"><br><br>
+
+            <textarea name="descricao" placeholder="Descrição"></textarea><br><br>
+
+            <input type="date" name="dataFechamento"><br><br>
+
+            <button type="submit">Salvar</button>
+
+        </form>
+
+    </div>
+
+    <div th:replace="layout/footer :: footer"></div>
+
+    </body>
+</html>

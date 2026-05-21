@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <body>
+
+    <div th:replace="layout/header :: header"></div>
+
+    <h2 style="text-align:center">Bem-vindo ao sistema</h2>
+
+    <div style="text-align:center">
+
+        <div th:if="${session.role == 'COMPRADOR'}">
+            <a href="/editais/criar">➕ Criar Edital</a>
+        </div>
+
+        <a href="/editais">📋 Ver Editais</a>
+
+    </div>
+
+    <div th:replace="layout/footer :: footer"></div>
+
+    </body>
+</html>
