@@ -5,6 +5,7 @@
 package com.main.bidding_frontend.service;
 
 import com.main.bidding_frontend.model.EditalDTO;
+import com.main.bidding_frontend.model.LancePostDTO;
 import com.main.bidding_frontend.model.UserDTO;
 import com.main.bidding_frontend.model.UserRequestDTO;
 import java.util.List;
@@ -53,5 +54,14 @@ public class ApiService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(edital, headers);
         return restTemplate.exchange(BASE_URL + "/api/editais", HttpMethod.POST, entity, String.class).getBody();
+    }
+    
+    public String criarLance(LancePostDTO lance, String token){
+        Long id = lance.getIdEdital();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(lance, headers);
+        return restTemplate.exchange(BASE_URL + "/api/editais/{id}/lances", HttpMethod.POST, entity, String.class, id).getBody();
     }
 }

@@ -4,34 +4,24 @@
  */
 package com.main.bidding_frontend.controller;
 
-import com.main.bidding_frontend.model.EditalDTO;
 import com.main.bidding_frontend.model.LancePostDTO;
 import com.main.bidding_frontend.service.ApiService;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class EditalController {
-    
+public class LanceController {
     private final ApiService apiService;
     
-    public EditalController(ApiService apiService){
+    public LanceController(ApiService apiService){
         this.apiService = apiService;
     }
     
-    @GetMapping("/editais")
-    public List<EditalDTO> listarEditais(HttpSession session){
+    @PostMapping("/lances")
+    public String criarLance(HttpSession session, LancePostDTO lance){
         String token = (String) session.getAttribute("token");
-        return apiService.listarEditais(token);
-    }
-    
-    @PostMapping("/editais")
-    public String criarEdital(HttpSession session, EditalDTO edital){
-        String token = (String) session.getAttribute("token");
-        return apiService.criarEdital(edital, token);
+        return apiService.criarLance(lance, token);
     }
    
 }
