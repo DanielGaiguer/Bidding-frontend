@@ -6,37 +6,54 @@ package com.main.bidding_frontend.controller;
 
 import com.main.bidding_frontend.model.UserDTO;
 import com.main.bidding_frontend.model.UserRequestDTO;
-import com.main.bidding_frontend.service.ApiService;
+import com.main.bidding_frontend.service.AuthRestClientService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+
 @Controller
 public class AuthController {
-    
-    private ApiService apiService;
-        
-    @PostMapping("/api/login")
-    public String logar(@ModelAttribute UserRequestDTO dto, HttpSession session){
-        try{
-            String token = apiService.logar(dto);
-            session.setAttribute("email", dto.getEmail());
-            session
-            session.setAttribute("token", token);
-            return "redirect:/editais";
-        }catch(Exception e ){
-            return "redirect:/login?error=true";
-        }
+    @Autowired
+    private AuthRestClientService service;
+
+    @GetMapping("/login")
+    public String login(
+        Model model
+    ) {
+        UserRequestDTO credenciais = new UserRequestDTO();
+        model.addAttribute("credenciais", credenciais);
+        return "login";
     }
     
-    @PostMapping("/api/registrar")
-    public String registrar(UserDTO dto){
-        try{
-            apiService.registrarUsuario(dto);
-            return "redirect:/login";
-        }catch(Exception e){
-            return "redirect:/login?error=true";
-        }
+    @PostMapping("/login")
+    public String logar(
+            @ModelAttribute UserRequestDTO credenciais,
+            HttpSession session
+    ) {
+        String token = service.logar(credenciais);
+        session.setAttribute("token", token);        
+        return "redirect:/";
+    }
+    
+    @GetMapping("/registrar")
+    public String registrar(
+            Model model
+    ) {
+        UserDTO newUser = new UserDTO();
+        model.addAttribute("user", newUser);
+        return "registrar";
+    }
+    
+    @PostMapping("/registrar")
+    public String mandarRegistro(
+            @ModelAttribute UserDTO user
+    ) {
+        service.registrar(user);
+        return "redirect:/login";
     }
 }

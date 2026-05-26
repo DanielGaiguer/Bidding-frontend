@@ -5,23 +5,21 @@
 package com.main.bidding_frontend.controller;
 
 import com.main.bidding_frontend.model.LancePostDTO;
-import com.main.bidding_frontend.service.ApiService;
+import com.main.bidding_frontend.service.LanceService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class LanceController {
-    private final ApiService apiService;
+    @Autowired
+    private LanceService service;
     
-    public LanceController(ApiService apiService){
-        this.apiService = apiService;
-    }
-    
-    @PostMapping("/api/lances")
+    @PostMapping("/lances")
     public String criarLance(HttpSession session, LancePostDTO lance){
         String token = (String) session.getAttribute("token");
-        return apiService.criarLance(lance, token);
+        return service.criarLance(lance, token);
     }
    
 }

@@ -1,31 +1,19 @@
 package com.main.bidding_frontend.controller;
 
 import com.main.bidding_frontend.model.EditalDTO;
-import com.main.bidding_frontend.service.ApiService;
+import com.main.bidding_frontend.service.EditalService;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class PageController {
-
-    private final ApiService apiService;
-
-    public PageController(ApiService apiService) {
-        this.apiService = apiService;
-    }
+    @Autowired
+    private EditalService service;
     
-    @GetMapping("/login")
-    public String loginPage() {
-        return "login";
-    }
-
-    @GetMapping("/register")
-    public String registerPage() {
-        return "register";
-    }
 
     @GetMapping("/")
     public String homePage(HttpSession session, Model model) {
@@ -43,7 +31,7 @@ public class PageController {
 
         String token = (String) session.getAttribute("token");
 
-        List<EditalDTO> editais = apiService.listarEditais(token);
+        List<EditalDTO> editais = service.listarEditais(token);
 
         if (status != null && !status.isEmpty()) {
             editais = editais.stream()
@@ -73,7 +61,7 @@ public class PageController {
 
         String token = (String) session.getAttribute("token");
 
-        List<EditalDTO> editais = apiService.listarEditais(token);
+        List<EditalDTO> editais = service.listarEditais(token);
 
         EditalDTO edital = editais.stream()
                 .filter(e -> e.getId().equals(id))
