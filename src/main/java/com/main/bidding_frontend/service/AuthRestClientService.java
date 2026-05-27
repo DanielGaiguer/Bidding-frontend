@@ -1,11 +1,7 @@
 package com.main.bidding_frontend.service;
 
-import com.main.bidding_frontend.model.EditalDTO;
 import com.main.bidding_frontend.model.UserDTO;
 import com.main.bidding_frontend.model.UserRequestDTO;
-import java.util.Arrays;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 

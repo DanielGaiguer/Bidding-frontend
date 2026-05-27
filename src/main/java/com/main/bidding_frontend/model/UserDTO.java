@@ -10,6 +10,7 @@ public class UserDTO {
 
     public UserDTO() {
     }
+    
 
     public UserDTO(Long id, String nome, String email, String senha, String role) {
         this.id = id;

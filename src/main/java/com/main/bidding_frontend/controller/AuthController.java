@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,17 +27,17 @@ public class AuthController {
     public String login(
         Model model
     ) {
-        UserRequestDTO credenciais = new UserRequestDTO();
-        model.addAttribute("credenciais", credenciais);
+        UserDTO user = new UserDTO();
+        model.addAttribute("user", user);
         return "login";
     }
     
     @PostMapping("/login")
     public String logar(
-            @ModelAttribute UserRequestDTO credenciais,
+            @ModelAttribute UserRequestDTO user,
             HttpSession session
     ) {
-        String token = service.logar(credenciais);
+        String token = service.logar(user);
         session.setAttribute("token", token);        
         return "redirect:/";
     }
@@ -46,13 +48,19 @@ public class AuthController {
     ) {
         UserDTO newUser = new UserDTO();
         model.addAttribute("user", newUser);
-        return "registrar";
+        return "register";
     }
     
     @PostMapping("/registrar")
     public String mandarRegistro(
-            @ModelAttribute UserDTO user
+            @Validated @ModelAttribute("user") UserDTO user,
+            BindingResult result
     ) {
+
+        if (result.hasErrors()) {
+            return "register";
+        }
+
         service.registrar(user);
         return "redirect:/login";
     }
