@@ -39,16 +39,24 @@
                             ➕ Criar Edital
 
                         </a>
+                        
+
 
                     </div>
+                    
+                    <div th:if="${session.role != null}">
+                        <a
+                            th:href="@{/editais}"
+                            class="btn btn-primary btn-lg shadow-sm w-100">
 
-                    <a
-                        th:href="@{/editais}"
-                        class="btn btn-primary btn-lg shadow-sm w-100">
+                            📋 Ver Editais
 
-                        📋 Ver Editais
-
-                    </a>
+                        </a>
+                    </div>
+                    
+                    <div th:if="${session.role == null}">
+                        <p class="btn btn-lg shadow-sm w-100 btn-secondary">Faça login para acessar os editais</p>
+                    </div>
 
                 </div>
 

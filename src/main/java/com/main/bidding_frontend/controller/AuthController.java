@@ -44,6 +44,15 @@ public class AuthController {
         return "redirect:/";
     }
     
+    @GetMapping("/logout")
+    public String logout(
+        HttpSession session
+    ){
+        session.setAttribute("token", "");
+        session.setAttribute("role", "");
+        return "redirect:/";
+    }
+    
     @GetMapping("/registrar")
     public String registrar(
             Model model
