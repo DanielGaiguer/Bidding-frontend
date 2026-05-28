@@ -48,8 +48,7 @@ public class AuthController {
     public String logout(
         HttpSession session
     ){
-        session.setAttribute("token", "");
-        session.setAttribute("role", "");
+        session.invalidate();
         return "redirect:/";
     }
     
