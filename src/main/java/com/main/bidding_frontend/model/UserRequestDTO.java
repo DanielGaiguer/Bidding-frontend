@@ -11,7 +11,7 @@ public class UserRequestDTO {
         this.email = email;
         this.senha = senha;
     }
-
+    
     public String getEmail() {
         return email;
     }
@@ -27,4 +27,6 @@ public class UserRequestDTO {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+    
+    
 }

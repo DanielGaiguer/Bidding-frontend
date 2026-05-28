@@ -32,11 +32,11 @@
                         Nome
                     </label>
 
-                    <input
-                        type="text"
-                        name="nome"
+                    <input type="text"
+                        th:field="*{nome}"
                         class="form-control"
                         placeholder="Digite seu nome"
+                        oninput="validarSenhas()"
                         required>
 
                 </div>
@@ -47,13 +47,12 @@
                         Email
                     </label>
 
-                    <input
-                        type="email"
-                        name="email"
+                    <input type="email"
+                        th:field="*{email}"
                         class="form-control"
                         placeholder="Digite seu email"
+                        oninput="validarSenhas()"
                         required>
-
                 </div>
 
                 <div class="mb-3">
@@ -62,27 +61,41 @@
                         Senha
                     </label>
 
-                    <input
-                        type="password"
-                        name="senha"
+                    <input type="password"
+                        id="senha"
+                        th:field="*{senha}"
                         class="form-control"
                         placeholder="Digite sua senha"
-                        required>
+                        required
+                        oninput="validarSenhas()">
 
                 </div>
+                
+                <div class="mb-3">
 
-                <button
-                    type="submit"
-                    class="btn btn-success w-100">
+                    <label class="form-label">
+                        Confirmar senha
+                    </label>
 
-                    Registrar
+                  <input type="password"
+                    id="confirmarSenha"
+                    name="confirmarSenha"
+                    class="form-control"
+                    placeholder="Confirme a sua senha"
+                    oninput="validarSenhas()"
+                    required>
+                </div>
 
-                </button>
+                <button type="submit"
+                    id="btnRegistrar"
+                    class="btn btn-success w-100"
+                    disabled>
+                Registrar
+            </button>
 
             </form>
 
             <div class="text-center mt-3">
-
                 <a
                     th:href="@{/login}"
                     class="text-decoration-none">
@@ -96,6 +109,20 @@
         </div>
 
     </div>
+        <script>
+    function validarSenhas() {
+        const senha = document.getElementById("senha").value;
+        const confirmar = document.getElementById("confirmarSenha").value;
+        const nome = document.getElementById("nome").value;
+        const email = document.getElementById("email").value;
+        const botao = document.getElementById("btnRegistrar");
 
+        if (nome === "" || email === "" || senha !== confirmar || senha === "" || senha.length < 8 || nome.length < 6 || email.length < 8) {
+            botao.disabled = true;
+        } else {
+            botao.disabled = false;
+        }
+    }
+    </script>
 </body>
 </html>

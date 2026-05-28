@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -28,22 +29,28 @@ public class AuthController {
     public String login(
         Model model
     ) {
-        UserDTO user = new UserDTO();
-        model.addAttribute("user", user);
+        model.addAttribute("user", new UserDTO());
         return "login";
     }
     
     @PostMapping("/login")
-    public String logar(
-            @ModelAttribute UserRequestDTO user,
-            HttpSession session
-    ) {
-        UserTokenDTO userLogged = service.logar(user);
-        session.setAttribute("token", userLogged.getToken());  
-        session.setAttribute("role", userLogged.getRole());
-        return "redirect:/";
+    public String logar(@ModelAttribute UserRequestDTO user, HttpSession session, Model model) {
+
+        try {
+            UserTokenDTO userLogged = service.logar(user);
+
+            session.setAttribute("token", userLogged.getToken());
+            session.setAttribute("role", userLogged.getRole());
+
+            return "redirect:/";
+
+        } catch (Exception e) {
+            model.addAttribute("user", new UserRequestDTO());
+            model.addAttribute("erro", "Usuário ou senha inválidos");
+            return "login";
+        }
     }
-    
+
     @GetMapping("/logout")
     public String logout(
         HttpSession session
@@ -63,11 +70,17 @@ public class AuthController {
     
     @PostMapping("/registrar")
     public String mandarRegistro(
-            @Validated @ModelAttribute("user") UserDTO user,
+            @ModelAttribute UserDTO user,
+            @RequestParam String confirmarSenha,
             BindingResult result
     ) {
 
         if (result.hasErrors()) {
+            return "register";
+        }
+
+        if (!user.getSenha().equals(confirmarSenha)) {
+            result.rejectValue("senha", "error.user", "Senhas não conferem");
             return "register";
         }
 

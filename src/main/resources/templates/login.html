@@ -11,7 +11,9 @@
 
 <body class="bg-light">
 
-    <div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="container d-flex justify-content-center align-items-center vh-100 ">
+            
+
 
         <div class="card shadow p-4" style="width: 400px;">
             
@@ -24,6 +26,10 @@
             <h2 class="text-center mb-4 mt-4">
                 Login
             </h2>
+            
+            <div th:if="${erro}" class="alert alert-danger">
+                <span th:text="${erro}"></span>
+            </div>
 
             <div
                 th:if="${param.error}"
