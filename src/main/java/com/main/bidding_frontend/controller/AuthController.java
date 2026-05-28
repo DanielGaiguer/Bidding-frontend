@@ -6,6 +6,7 @@ package com.main.bidding_frontend.controller;
 
 import com.main.bidding_frontend.model.UserDTO;
 import com.main.bidding_frontend.model.UserRequestDTO;
+import com.main.bidding_frontend.model.UserTokenDTO;
 import com.main.bidding_frontend.service.AuthRestClientService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,9 @@ public class AuthController {
             @ModelAttribute UserRequestDTO user,
             HttpSession session
     ) {
-        String token = service.logar(user);
-        session.setAttribute("token", token);        
+        UserTokenDTO userLogged = service.logar(user);
+        session.setAttribute("token", userLogged.getToken());  
+        session.setAttribute("role", userLogged.getRole());
         return "redirect:/";
     }
     

@@ -19,7 +19,6 @@ public class PageController {
     public String homePage(HttpSession session, Model model) {
         model.addAttribute("role", session.getAttribute("role"));
         model.addAttribute("userNome", session.getAttribute("userNome"));
-
         return "home";
     }
 
