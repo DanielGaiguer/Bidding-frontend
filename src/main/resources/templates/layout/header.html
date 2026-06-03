@@ -5,7 +5,7 @@
 
 <div th:fragment="header">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <nav class="navbar navbar-expand navbar-dark bg-primary shadow-sm">
         
         <div class="container">
 
@@ -13,13 +13,7 @@
                 Sistema de Licitações
             </a>
 
-            <button class="navbar-toggler" type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="d-flex align-items-center justify-content-between w-100" id="navbarNav">
 
                 <ul class="navbar-nav me-auto">
 
@@ -33,11 +27,11 @@
 
                 </ul>
 
-                <a class="btn btn-light btn-sm" href="/login" th:if="${session.role == null}" >
+                <a class="btn btn-light btn-sm" href="/login" th:if="${session.role == null}">
                     Login
                 </a>
                 
-                <a class="btn btn-light btn-sm" href="/logout" th:if="${session.role != null}" >
+                <a class="btn btn-light btn-sm" href="/logout" th:if="${session.role != null}">
                     Logout
                 </a>
 
