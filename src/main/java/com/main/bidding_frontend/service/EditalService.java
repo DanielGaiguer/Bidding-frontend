@@ -31,12 +31,13 @@ public class EditalService {
     }
      
     public String criarEdital(EditalDTO edital, String token){
-        String response = restClient.get()
+        String response = restClient.post()
                 .uri("/editais")
                 .header("Authorization", "Bearer " + token)
+                .body(edital)
                 .retrieve()
                 .body(String.class);
-        return response;
+        return response;    
     }
 
 }

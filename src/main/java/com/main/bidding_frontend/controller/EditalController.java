@@ -4,16 +4,16 @@ import com.main.bidding_frontend.model.EditalDTO;
 import com.main.bidding_frontend.service.EditalService;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class PageController {
+public class EditalController {
     @Autowired
     private EditalService service;
-    
 
     @GetMapping("/")
     public String homePage(HttpSession session, Model model) {
@@ -63,12 +63,18 @@ public class PageController {
         List<EditalDTO> editais = service.listarEditais(token);
 
         EditalDTO edital = editais.stream()
-                .filter(e -> e.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+            .filter(e -> e.getId().equals(id))
+            .findFirst()
+            .orElseThrow(() -> new NoSuchElementException("Edital não encontrado com o ID: " + id));
 
         model.addAttribute("edital", edital);
 
         return "edital-detalhe";
+    }
+    
+    @PostMapping("/editais/criar")
+    public String criarEdital(@ModelAttribute EditalDTO edital, HttpSession session){
+        service.criarEdital(edital, session.getAttribute("token").toString());
+        return "redirect:/editais";
     }
 }
