@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.servlet.FlashMap;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import tools.jackson.databind.ObjectMapper;
 
 
 @Controller
@@ -34,20 +38,24 @@ public class AuthController {
     }
     
     @PostMapping("/login")
-    public String logar(@ModelAttribute UserRequestDTO user, HttpSession session, Model model) {
-
+    public String logar(@ModelAttribute UserRequestDTO user, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
         try {
             UserTokenDTO userLogged = service.logar(user);
 
             session.setAttribute("token", userLogged.getToken());
             session.setAttribute("role", userLogged.getRole());
+            redirectAttributes.addFlashAttribute("mensagemSucesso", "Cadastro realizado com sucesso");
 
             return "redirect:/";
 
-        } catch (Exception e) {
+        } catch (HttpStatusCodeException e) {
+            String mensagemErroBackend = new ObjectMapper().readTree(e.getResponseBodyAsString()).get("message").asString();
+            redirectAttributes.addFlashAttribute("mensagemErro", mensagemErroBackend);
             model.addAttribute("user", new UserRequestDTO());
-            model.addAttribute("erro", "Usuário ou senha inválidos");
-            return "login";
+            return "redirect:/login";
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("mensagemErro", e.getMessage());
+            return "redirect:/login";
         }
     }
 
@@ -63,6 +71,7 @@ public class AuthController {
     public String registrar(
             Model model
     ) {
+ 
         UserDTO newUser = new UserDTO();
         model.addAttribute("user", newUser);
         return "register";
@@ -72,6 +81,7 @@ public class AuthController {
     public String mandarRegistro(
             @ModelAttribute UserDTO user,
             @RequestParam String confirmarSenha,
+            RedirectAttributes redirectAttributes,
             BindingResult result
     ) {
 
@@ -83,8 +93,16 @@ public class AuthController {
             result.rejectValue("senha", "error.user", "Senhas não conferem");
             return "register";
         }
-
-        service.registrar(user);
-        return "redirect:/login";
+        try{
+            service.registrar(user);
+            return "redirect:/login";
+        }catch(HttpStatusCodeException e){
+            String mensagemErroBackend = new ObjectMapper().readTree(e.getResponseBodyAsString()).get("message").asString();
+            redirectAttributes.addFlashAttribute("mensagemErro", mensagemErroBackend);
+            return "redirect:/register";
+        }catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("mensagemErro", e.getMessage());
+            return "redirect:/login";
+        }
     }
 }

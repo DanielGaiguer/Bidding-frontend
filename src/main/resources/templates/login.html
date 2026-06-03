@@ -12,12 +12,9 @@
 <body class="bg-light">
 
     <div class="container d-flex justify-content-center align-items-center vh-100 ">
-            
-
-
         <div class="card shadow p-4" style="width: 400px;">
             
-            <button type="button"
+            <button type="button" 
                     class="btn btn-secondary btn-md position-absolute top-0 start-0 m-3 mb-5"
                     onclick="history.back()">
                 Voltar
@@ -27,14 +24,8 @@
                 Login
             </h2>
             
-            <div th:if="${erro}" class="alert alert-danger">
-                <span th:text="${erro}"></span>
-            </div>
-
-            <div
-                th:if="${param.error}"
-                class="alert alert-danger">
-                Usuário ou senha inválidos
+            <div th:if="${mensagemErro}" class="alert alert-danger">
+                <span th:text="${mensagemErro}"></span>
             </div>
 
             <form th:action="@{/login}" method="post" th:object="${user}">
@@ -46,9 +37,11 @@
                     <input
                         type="email"
                         name="email"
+                        id="email"
                         class="form-control"
                         placeholder="Digite seu email"
                         required
+                        oninput="validarCampos()"
                         th:class="${#fields.hasErrors('email')} ? 'form-control is-invalid' : 'form-control'"
                         >
                 </div>
@@ -63,14 +56,17 @@
                     <input
                         type="password"
                         name="senha"
+                        id="senha"
                         class="form-control"
                         placeholder="Digite sua senha"
+                        oninput="validarCampos()"
                         required>
                 </div>
 
                 <button
                     type="submit"
-                    class="btn btn-primary w-100">
+                    id="btnLogar"
+                    class="btn btn-primary w-100" disabled>
                     Entrar
                 </button>
 
@@ -86,5 +82,18 @@
             </div>
         </div>
     </div>
+    <script>
+    function validarCampos() {
+        const senha = document.getElementById("senha").value;
+        const email = document.getElementById("email").value;
+        const botao = document.getElementById("btnLogar");
+
+        if (email === "" || senha === "" || senha.length < 6 || email.length < 8) {
+            botao.disabled = true;
+        } else {
+            botao.disabled = false;
+        }
+    }
+    </script>
 </body>
 </html>

@@ -23,6 +23,10 @@
             <h2 class="text-center mb-4 mt-4">
                 Cadastro
             </h2>
+            
+            <div th:if="${mensagemErro}" class="alert alert-danger">
+                <span th:text="${mensagemErro}"></span>
+            </div>
 
             <form th:action="@{/registrar}" th:object="${user}" method="post">
 
@@ -117,7 +121,7 @@
         const email = document.getElementById("email").value;
         const botao = document.getElementById("btnRegistrar");
 
-        if (nome === "" || email === "" || senha !== confirmar || senha === "" || senha.length < 8 || nome.length < 6 || email.length < 8) {
+        if (nome === "" || email === "" || senha !== confirmar || senha === "" || senha.length < 6 || nome.length < 6 || email.length < 8) {
             botao.disabled = true;
         } else {
             botao.disabled = false;
