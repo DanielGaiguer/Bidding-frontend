@@ -4,7 +4,6 @@ import com.main.bidding_frontend.model.UserDTO;
 import com.main.bidding_frontend.model.UserRequestDTO;
 import com.main.bidding_frontend.model.UserTokenDTO;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 
